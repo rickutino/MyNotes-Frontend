@@ -38,7 +38,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem("@mynotes:user", JSON.stringify(user));
       localStorage.setItem("@mynotes:token", token);
 
-      api.defaults.headers.authorization = `Bearer ${token}`;
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       setData({ user, token });
     } catch(error: any) {
       if(error.response){
@@ -61,7 +61,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
     const user = localStorage.getItem("@mynotes:user");
 
     if (user && token) {
-      api.defaults.headers.authorization = `Bearer ${token}`;
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       setData({
         token,
