@@ -15,13 +15,14 @@ interface IUser {
 }
 
 interface IDataResponse {
-  user: IUser;
-  token: string;
+  user?: IUser;
+  token?: string;
 }
 
 interface IAuthContext {
   signIn: ({ email, password }: ISignIn) => Promise<void>;
-  user: IUser;
+  user?: IUser;
+  signOut: () => void;
 }
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);
@@ -47,6 +48,14 @@ function AuthProvider({ children }: { children: ReactNode }) {
       }
     }
   }
+
+  function signOut() {
+    localStorage.removeItem("@mynotes:token");
+    localStorage.removeItem("@mynotes:user");
+
+    setData({});
+  }
+
   useEffect(() => {
     const token = localStorage.getItem("@mynotes:token");
     const user = localStorage.getItem("@mynotes:user");
@@ -62,7 +71,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ signIn, user: data.user }}>
+    <AuthContext.Provider value={{ signIn, user: data.user, signOut }}>
       {children}
     </AuthContext.Provider>
   )
