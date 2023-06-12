@@ -23,6 +23,7 @@ interface IAuthContext {
   signIn: ({ email, password }: ISignIn) => Promise<void>;
   user?: IUser;
   signOut: () => void;
+  updateProfile: () => void;
 }
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);
@@ -56,6 +57,21 @@ function AuthProvider({ children }: { children: ReactNode }) {
     setData({});
   }
 
+  async function updateProfile({user}:IAuthContext) {
+    try {
+      await api.put("/users", user);
+
+      localStorage.setItem("@mynotes:user", JSON.stringify(user));
+      setData({ user, token: data.token});
+    } catch(error: any) {
+      if(error.response){
+        alert(error.response.data.message)
+      } else {
+        alert("Unable to update profile!")
+      }
+    }
+  }
+
   useEffect(() => {
     const token = localStorage.getItem("@mynotes:token");
     const user = localStorage.getItem("@mynotes:user");
@@ -71,7 +87,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ signIn, user: data.user, signOut }}>
+    <AuthContext.Provider value={{ signIn, user: data.user, signOut, updateProfile }}>
       {children}
     </AuthContext.Provider>
   )
