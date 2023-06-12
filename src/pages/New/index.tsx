@@ -6,8 +6,21 @@ import { NoteItem } from "../../components/NoteItem";
 import { Section } from "../../components/Section";
 import { Textarea } from "../../components/Textarea";
 import { Container, Form } from "./styles";
+import { useState } from "react";
 
 export function New() {
+  const [links, setLinks] = useState<String[]>([]);
+  const [newLink, setNewLink] = useState("");
+
+  function handleAddLink() {
+    setLinks(prevState => [...prevState, newLink]);
+    setNewLink("");
+  }
+
+  function handleRemoveLink(deleted: string) {
+    setLinks(prevState => prevState.filter(link => link !== deleted));
+  }
+
   return (
     <Container>
       <Header />
@@ -23,8 +36,21 @@ export function New() {
           <Textarea placeholder="Observations" />
 
           <Section title="Useful links">
-            <NoteItem value={"https://rocketseat.com.br"} />
-            <NoteItem isNew placeholder="New link" />
+            {
+              links.map((link, index) => (
+                <NoteItem
+                  key={String(index)}
+                  value={String(link)}
+                  onClick={() => handleRemoveLink(String(link))}
+                />
+              ))
+            }
+            <NoteItem
+              isNew
+              value={newLink}
+              onChange={e => setNewLink(e.target.value)}
+              onClick={handleAddLink}
+            />
           </Section>
 
           <Section title="Markers">
