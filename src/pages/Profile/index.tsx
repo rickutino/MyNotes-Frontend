@@ -7,11 +7,23 @@ import { useAuth } from "../../hook/auth";
 import { useState } from "react";
 
 export function Profile() {
-  const { user } = useAuth();
+  const { user, updateProfile } = useAuth();
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
-  const [oldPassword, setOldPassword] = useState("");
+  const [actualPassword, setActualPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+
+  async function handleUpdate() {
+    const user = {
+      name,
+      email,
+      password: actualPassword,
+      oldPassword: newPassword
+    }
+
+    console.log("hansleUpdate ", user)
+    updateProfile({ user })
+  }
 
   return (
     <Container>
@@ -50,7 +62,7 @@ export function Profile() {
           placeholder="Actual password"
           type="password"
           icon={FiLock}
-          onChange={e => setName(e.target.value)}
+          onChange={e => setActualPassword(e.target.value)}
         />
 
         <Input 
@@ -60,7 +72,7 @@ export function Profile() {
           onChange={e => setNewPassword(e.target.value)}
         />
 
-        <Button title={"Save"} />
+        <Button title={"Save"} onClick={handleUpdate} />
       </Form>
     </Container>
   )
