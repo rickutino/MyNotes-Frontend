@@ -17,8 +17,8 @@ export function Profile() {
     const user = {
       name,
       email,
-      password: actualPassword,
-      oldPassword: newPassword
+      password: newPassword,
+      oldPassword: actualPassword
     }
 
     console.log("hansleUpdate ", user)
