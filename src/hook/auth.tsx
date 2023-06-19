@@ -14,6 +14,11 @@ interface IUser {
   avatar: string;
 }
 
+interface IUserProfile {
+  user: IUser;
+  avatarFile: string | null;
+}
+
 interface IDataResponse {
   user?: IUser;
   token?: string;
@@ -23,7 +28,7 @@ interface IAuthContext {
   signIn: ({ email, password }: ISignIn) => Promise<void>;
   user?: IUser;
   signOut: () => void;
-  updateProfile: () => void;
+  updateProfile: ({user, avatarFile}: IUserProfile) => void;
 }
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);
@@ -57,7 +62,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
     setData({});
   }
 
-  async function updateProfile({user}:IAuthContext) {
+  async function updateProfile({user, avatarFile}: IUserProfile) {
     try {
       await api.put("/users", user);
 

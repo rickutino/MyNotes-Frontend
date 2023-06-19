@@ -8,6 +8,9 @@ import { useState } from "react";
 
 export function Profile() {
   const { user, updateProfile } = useAuth();
+
+  const [avatar, setAvatar] = useState(user?.avatar);
+  const [avatarFile, setAvatarFile] = useState(null);
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
   const [actualPassword, setActualPassword] = useState("");
@@ -22,7 +25,15 @@ export function Profile() {
     }
 
     console.log("hansleUpdate ", user)
-    updateProfile({ user })
+    updateProfile({ user, avatarFile })
+  }
+
+  async function handleChangeAvatar(event) {
+    const file = event.target.files[0];
+    setAvatarFile(file);
+
+    const imagePreview = URL.createObjectURL(file)
+    setAvatar(imagePreview);
   }
 
   return (
@@ -33,12 +44,12 @@ export function Profile() {
 
       <Form>
         <Avatar>
-          <img src="https://github.com/rickutino.png" alt="User image" />
+          <img src={avatar} alt="User image" />
 
           <label htmlFor="avatar">
             <FiCamera size={20}/>
 
-            <input id="avatar" type="file"/>
+            <input id="avatar" type="file" onChange={handleChangeAvatar}/>
           </label>
         </Avatar>
 
