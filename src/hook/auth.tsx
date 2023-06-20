@@ -64,10 +64,18 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
   async function updateProfile({user, avatarFile}: IUserProfile) {
     try {
-      await api.put("/users", user);
+      if(avatarFile) {
+        const fileUploadForm = new FormData();
+        fileUploadForm.append("avatar", avatarFile);
 
+        const response = await api.patch("/users/avatar", fileUploadForm);
+        user.avatar = response.data.avatar;
+      }
+      
+      await api.put("/users", user);
       localStorage.setItem("@mynotes:user", JSON.stringify(user));
       setData({ user, token: data.token});
+      alert("Profile updated")
     } catch(error: any) {
       if(error.response){
         alert(error.response.data.message)

@@ -6,13 +6,17 @@ import { Avatar, Container, Form } from "./styles";
 import { useAuth } from "../../hook/auth";
 import { useState } from "react";
 
+import avatarPlaceholder from "../../assets/avatar_placeholder.svg";
+import { api } from "../../services/api";
+
 export function Profile() {
   const { user, updateProfile } = useAuth();
+  const avatarUrl = user?.avatar ? `${api.defaults.baseURL}/files/${user.avatar}` : avatarPlaceholder;
 
-  const [avatar, setAvatar] = useState(user?.avatar);
+  const [avatar, setAvatar] = useState(avatarUrl);
   const [avatarFile, setAvatarFile] = useState(null);
-  const [name, setName] = useState(user?.name);
-  const [email, setEmail] = useState(user?.email);
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
   const [actualPassword, setActualPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
@@ -24,7 +28,6 @@ export function Profile() {
       oldPassword: actualPassword
     }
 
-    console.log("hansleUpdate ", user)
     updateProfile({ user, avatarFile })
   }
 
@@ -44,7 +47,7 @@ export function Profile() {
 
       <Form>
         <Avatar>
-          <img src={avatar} alt="User image" />
+          <img src={avatarUrl} alt="User image" />
 
           <label htmlFor="avatar">
             <FiCamera size={20}/>
