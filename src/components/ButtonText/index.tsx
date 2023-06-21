@@ -6,7 +6,6 @@ interface IButtonTextProps {
 }
 
 export function ButtonText({ title, isActive = false, ...rest }: IButtonTextProps) {
-  console.log(isActive, {...rest})
   return (
     <Container type="button" isActive={isActive} {...rest}>
       {title}

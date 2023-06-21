@@ -12,6 +12,9 @@ export function New() {
   const [links, setLinks] = useState<String[]>([]);
   const [newLink, setNewLink] = useState("");
 
+  const [tags, setTags] = useState<String[]>([]);
+  const [newTag, setNewTag] = useState("");
+
   function handleAddLink() {
     setLinks(prevState => [...prevState, newLink]);
     setNewLink("");
@@ -19,6 +22,11 @@ export function New() {
 
   function handleRemoveLink(deleted: string) {
     setLinks(prevState => prevState.filter(link => link !== deleted));
+  }
+
+  function handleAddTag(){
+    setTags(prevState => [...prevState, newTag]);
+    setNewTag("");
   }
 
   return (
@@ -55,11 +63,22 @@ export function New() {
 
           <Section title="Markers">
             <div className="tags">
-              <NoteItem value={"React"} />
-              <NoteItem value={"Node"} />
-              <NoteItem value={"Ret"} />
-              <NoteItem value={"babd"} />
-              <NoteItem isNew placeholder="New tag" />
+              {
+                tags.map((tag, index) => (
+                  <NoteItem
+                    key={String(index)}
+                    value={String(tag)}
+                    onClick={() => {}}
+                  />
+                ))
+              }
+              <NoteItem 
+                isNew
+                placeholder="New tag"
+                onChange={e => setNewTag(e.target.value)}
+                value={newTag}
+                onClick={handleAddTag}
+              />
             </div>
           </Section>
 
