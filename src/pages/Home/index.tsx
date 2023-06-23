@@ -6,8 +6,29 @@ import { Brand, Container, Content, Menu, NewNote, Search } from "./styles";
 import { Input } from "../../components/Input";
 import { Note } from "../../components/Note";
 import { Section } from "../../components/Section";
+import { useEffect, useState } from "react";
+import { api } from "../../services/api";
+
+interface ITags {
+  id: string;
+  name: string;
+  note_id: string;
+  user_id: string;
+}
 
 export function Home() {
+  const [tags, setTags] = useState<ITags[]>([]);
+
+  useEffect(() => {
+    async function fetchTags() {
+      const response = await api.get("/tags");
+      console.log(response.data)
+      setTags(response.data);
+    }
+
+    fetchTags();
+  },[]);
+
   return (
     <Container>
       <Brand>
@@ -20,12 +41,13 @@ export function Home() {
         <li>
           <ButtonText title="All Tags" isActive />
         </li>
-        <li>
-          <ButtonText title="React" />
-        </li>
-        <li>
-          <ButtonText title="Nodejs" />
-        </li>
+        {
+          tags && tags.map(tag => (
+            <li key={tag.id}>
+              <ButtonText title={tag.name}  />
+            </li>
+          ))
+        }
       </Menu>
 
       <Search>
