@@ -3,6 +3,7 @@ import { Container } from "./styles";
 interface IButtonTextProps {
   title: string;
   isActive?: boolean;
+  onClick: () => void;
 }
 
 export function ButtonText({ title, isActive = false, ...rest }: IButtonTextProps) {

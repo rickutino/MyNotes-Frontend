@@ -18,6 +18,18 @@ interface ITags {
 
 export function Home() {
   const [tags, setTags] = useState<ITags[]>([]);
+  const [tagsSelected, setTagsSelected] = useState<string[]>([]);
+
+  function handleTagSelected(tagName: string) {
+    const alreadySelected = tagsSelected.includes(tagName);
+
+    if(alreadySelected) {
+      const filteredTags = tagsSelected.filter(tag => tag !== tagName)
+      setTagsSelected(filteredTags)
+    } else {
+      setTagsSelected(prevState => [...prevState, tagName]);
+    }
+  }
 
   useEffect(() => {
     async function fetchTags() {
@@ -39,12 +51,20 @@ export function Home() {
 
       <Menu>
         <li>
-          <ButtonText title="All Tags" isActive />
+          <ButtonText
+            title="All Tags"
+            onClick={() => handleTagSelected("All tags")}
+            isActive={tagsSelected.length === 0}
+          />
         </li>
         {
           tags && tags.map(tag => (
             <li key={tag.id}>
-              <ButtonText title={tag.name}  />
+              <ButtonText 
+                title={tag.name}
+                onClick={() => handleTagSelected(tag.name)}
+                isActive={tagsSelected.includes(tag.name)}
+              />
             </li>
           ))
         }
