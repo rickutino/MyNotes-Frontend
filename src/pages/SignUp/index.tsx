@@ -23,7 +23,7 @@ export function SignUp() {
     api.post("/users", { name, email, password })
       .then(() => {
         alert("Successfully registered user!")
-        navigate("/");
+        navigate(-1);
       })
       .catch((error: { response: { data: { message: string; }; }; }) => {
         if (error.response) {

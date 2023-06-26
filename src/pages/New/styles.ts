@@ -50,7 +50,7 @@ export const Form = styled.form`
       font-size: 32px;
     }
 
-    a {
+    button {
       font-size: 20px;
       color: ${({ theme }: ThemeTypeProps) => theme.COLORS.GRAY_100};
     }
