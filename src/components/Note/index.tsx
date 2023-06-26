@@ -3,7 +3,7 @@ import { Container } from "./styles";
 
 interface Tag {
   id: string;
-  title: string;
+  name: string;
 }
 
 interface INoteProps {
@@ -15,6 +15,7 @@ interface INoteProps {
 
 export function Note({ data, ...rest }: INoteProps) {
   const { title, tags } = data;
+  console.log(tags)
 
   return (
     <Container {...rest} >
@@ -23,7 +24,7 @@ export function Note({ data, ...rest }: INoteProps) {
 
         { tags && 
           <footer>
-            {tags.map( tag => <Tag key={tag.id} title={tag.title} />)}
+            {tags.map( tag => <Tag key={tag.id} title={tag.name} />)}
           </footer>
         }
       </>

@@ -17,7 +17,9 @@ interface ITags {
 }
 
 export function Home() {
+  const [search, setSearch] = useState("");
   const [tags, setTags] = useState<ITags[]>([]);
+  const [notes, setNotes] = useState<any[]>([]);
   const [tagsSelected, setTagsSelected] = useState<string[]>([]);
 
   function handleTagSelected(tagName: string) {
@@ -32,9 +34,19 @@ export function Home() {
   }
 
   useEffect(() => {
+    async function fetchNotes() {
+      const response = await api.get(`/notes?title=${search}&tags=${tagsSelected}`);
+      console.log(response.data)
+      setNotes(response.data);
+    }
+
+    fetchNotes();
+  },[tagsSelected, search]);
+
+  useEffect(() => {
     async function fetchTags() {
       const response = await api.get("/tags");
-      console.log(response.data)
+      
       setTags(response.data);
     }
 
@@ -71,19 +83,23 @@ export function Home() {
       </Menu>
 
       <Search>
-        <Input placeholder="Search by title" icon={FiSearch}/>
+        <Input 
+          placeholder="Search by title"
+          icon={FiSearch}
+          onChange={(e) => setSearch(e.target.value)}  
+        />
       </Search>
 
       <Content>
         <Section title="My Notes">
-          <Note data={{
-            title:"React",
-            tags: [
-              { id: "1", title: "React"},
-              { id: "2", title: "Javascript"},
-              { id: "3", title: "Typescript"},
-            ]
-          }}/>
+          {
+            notes.map(note => (
+              <Note 
+                key={String(note.id)}
+                data={note}
+              />
+            ))
+          }
         </Section>
       </Content>
       

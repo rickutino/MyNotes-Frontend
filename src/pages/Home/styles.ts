@@ -19,8 +19,9 @@ export const Container = styled.div`
     "menu content"
     "newnote content";
 
-  background-color: ${({ theme }: ThemeTypeProps) => theme.COLORS.BACKGROUND_800}
+  background-color: ${({ theme }: ThemeTypeProps) => theme.COLORS.BACKGROUND_800};
 `;
+
 export const Brand = styled.div`
   grid-area: brand;
 

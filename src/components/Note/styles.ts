@@ -9,6 +9,7 @@ export const Container = styled.button`
   width: 100%;
   background-color: ${({ theme }: ThemeTypeProps) => theme.COLORS.BACKGROUND_700};
 
+  margin: 0.45rem 0;
   border: none;
   border-radius: 16px;
 
