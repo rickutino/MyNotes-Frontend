@@ -8,6 +8,7 @@ import { Note } from "../../components/Note";
 import { Section } from "../../components/Section";
 import { useEffect, useState } from "react";
 import { api } from "../../services/api";
+import { useNavigate } from "react-router-dom";
 
 interface ITags {
   id: string;
@@ -21,6 +22,8 @@ export function Home() {
   const [tags, setTags] = useState<ITags[]>([]);
   const [notes, setNotes] = useState<any[]>([]);
   const [tagsSelected, setTagsSelected] = useState<string[]>([]);
+  
+  const navigate = useNavigate();
 
   function handleTagSelected(tagName: string) {
     if(tagName === "All tags") {
@@ -35,6 +38,10 @@ export function Home() {
     } else {
       setTagsSelected(prevState => [...prevState, tagName]);
     }
+  }
+
+  async function handleDetails(id: string) {
+    navigate(`/details/${id}`)
   }
 
   useEffect(() => {
@@ -101,6 +108,7 @@ export function Home() {
               <Note 
                 key={String(note.id)}
                 data={note}
+                onClick={() => handleDetails(String(note.id))}
               />
             ))
           }

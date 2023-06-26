@@ -10,7 +10,8 @@ interface INoteProps {
   data: {
     title: string;
     tags: Tag[];
-  }
+  },
+  onClick: () => void;
 }
 
 export function Note({ data, ...rest }: INoteProps) {
